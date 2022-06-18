@@ -4,20 +4,26 @@
  * @return {number}
  */
 var search = function(nums, target) {
-    let left = 0;
+    let condition = (value) =>{
+        if(value >= target){
+            return true   
+        }else{
+            return false
+        }
+    }
+    
+    let left = 0
     let right = nums.length - 1;
-    while(left <= right){
-        let mid = Math.floor((right - left) / 2) + left;
+    
+    while(left < right){
+        let mid = left + Math.floor((right - left)/2);
         let val = nums[mid];
         
-        if(val === target){
-            return mid;
-        }else if (val > target){
-            right = mid - 1;
+        if(condition(val)){
+            right = mid;   
         }else{
             left = mid + 1;
         }
     }
-    
-    return -1
+    return(nums[left] === target ? left : -1);
 };
