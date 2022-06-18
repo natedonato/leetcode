@@ -4,21 +4,24 @@
  * @return {number}
  */
 var searchInsert = function(nums, target) {
-    let left = 0;
-    let right = nums.length - 1;
-    
-    while (left <= right){
-        const mid = Math.floor((right - left) / 2) + left;
-        const val = nums[mid];
-        
-        if(val < target){
-            left = mid + 1
-        }else if(val > target){
-            right = mid - 1;
-        }else if (val === target){
-            return mid;
+    const cond = (idx) => {
+        if(nums[idx] >= target){
+            return true;
         }
+        return false;
     }
     
+    let [left,right] = [0, nums.length];
+    
+    while(left < right){
+        let mid = left + Math.floor((right -left)/2);
+        
+        if(cond(mid)){
+            right = mid;
+        }else{
+            left = mid + 1;
+        }
+    }
+
     return left
 };
