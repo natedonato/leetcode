@@ -3,37 +3,45 @@
  * @return {string}
  */
 var reverseVowels = function(s) {
-    let character_array = s.split('');
-
+    s = s.split('');
     
-    // test if character is vowel
-    function isVowel(char){
-        return 'aeiouAEIOU'.includes(char) === true;
+    let left = 0
+    let right = s.length - 1;
+    let dict = {
+        "a": true,
+        "e": true,
+        "i": true,
+        "o": true,
+        "u": true,
+        "A": true,
+        "E": true,
+        "I": true,
+        "O": true,
+        "U": true
     };
     
-    // arrays to collect seen vowels and the indexes we have seen them at
-    let vowels = [];
-    let vowel_indices = [];
-        
-    // go through each character of string, check if it's a vowel
-    for(let i = 0; i < character_array.length; i++){
-        let current_char = character_array[i];
-        
-        // if it is a vowel, record the character and the index of the vowel
-        if(isVowel(current_char)){
-           vowels.push(current_char);
-            // add indices to index collection in reverse order by unshift
-           vowel_indices.unshift(i);
-         }        
+    function isVowel(char){
+        return (dict[char] === true) 
+    };
+    
+    
+    while(left < right){
+       while(!isVowel(s[left]) && !(left >= s.length -1)){
+            left += 1;
+        };
+        while(!isVowel(s[right]) && !(right <= 0)){
+            right -= 1;
+        };
+
+        if(left < right){
+            let temp = s[left];
+            s[left] = s[right];
+            s[right] = temp;
+        };
+
+        left += 1;
+        right -= 1;
     }
     
-    // use our two collections to assign seen vowels to their seen indexes (indexes are reversed, so vowels will be reversed)  
-    for(let i = 0; i < vowels.length; i++){
-        let idx = vowel_indices[i];
-        let char = vowels[i];
-        character_array[idx] = char;
-    }
-    
-    // rejoin edited array into string and return
-    return character_array.join('')
+    return s.join('')
 };
