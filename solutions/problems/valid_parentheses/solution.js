@@ -2,28 +2,27 @@
  * @param {string} s
  * @return {boolean}
  */
+
+const pairs = {
+    ")":"(",
+    "]":"[",
+    "}":"{"
+}
 var isValid = function(s) {
-    const stack = [];
-    
-    const pair_lookup = {
-        ')': '(', 
-        '}': '{', 
-        ']': '['    
-    }
-    
+    let stack = [];
     for(let i = 0; i < s.length; i++){
-        let current_char = s[i];
-        
-        if(stack.length === 0){
-            stack.push(current_char)
-        }else{
-            if(pair_lookup[current_char] === stack[stack.length - 1]){
-                stack.pop();
-            }else{
-                stack.push(current_char)
+        const char = s[i];
+        const pair = pairs[char];
+        console.log(char, pair);
+
+        if(pair !== undefined){
+            let last = stack.pop();
+            if(last !== pair){
+                return false
             }
+        }else{
+            stack.push(char);
         }
     }
-    
-    return (stack.length === 0);
+    return stack.length === 0;
 };
