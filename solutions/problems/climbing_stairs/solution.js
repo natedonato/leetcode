@@ -2,12 +2,12 @@
  * @param {number} n
  * @return {number}
  */
-var climbStairs = function(n, memo = {}) {
-    if(n <= 0){return 0}
-    if(n === 1){return 1}
-    if(n == 2){return 2}
-    if(memo[n]){return memo[n]}
-    memo[n] = climbStairs(n - 1, memo) + climbStairs(n - 2, memo)
-    
-    return memo[n]
+var climbStairs = function(n) {
+    let steps = [1,2];
+
+    for(let i = 2; i < n; i++){
+        steps[i] = steps[i - 1] + steps[i - 2];
+    }
+
+    return steps[n - 1];
 };
