@@ -1,8 +1,9 @@
 /**
  * Definition for a binary tree node.
- * function TreeNode(val) {
- *     this.val = val;
- *     this.left = this.right = null;
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
  * }
  */
 /**
@@ -10,20 +11,25 @@
  * @return {boolean}
  */
 var isBalanced = function(root) {
-      return height(root) !== -1; 
+    // return height or -1 if unbalanced
 
-    function height(node) {
-        if (node === null) {
-            return 0; 
+    var dfsHeight = function(node ){
+        
+        if(node === null){
+            return 0;
         }
 
-        let left = height(node.left); 
-        let right = height(node.right); 
-    
-        if ( left === -1 || right === -1 || Math.abs(left - right) > 1) {
-            return -1;
+        let left = dfsHeight(node.left);
+
+        let right = dfsHeight(node.right);
+
+        if(left === -1 || right === -1 || Math.abs(left - right) > 1){
+            return -1
         }
 
-        return 1 + Math.max(left, right); 
+        return 1 + Math.max(left, right)
     }
+
+
+    return dfsHeight(root) !== -1
 };
