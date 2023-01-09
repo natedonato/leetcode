@@ -3,21 +3,19 @@
  * @return {number}
  */
 var majorityElement = function(nums) {
-    let count = {};
-    let target = nums.length / 2;
-    
-    
-    
-    
-    for(const num of nums){
-        if(!count[num]){
-            count[num] = 1
-        }else{
-            count[num] += 1;
-   
-        };
-        if(count[num] >= target){
-            return num;
-        };
+    let count = 0;
+    let majority = null;
+
+    for(let i = 0; i < nums.length; i++){
+        if(count === 0){
+            majority = nums[i]
+            count += 1;
+        }else if(nums[i] === majority){
+            count += 1;
+        }else if(nums[i] !== majority){
+            count -= 1;
+        }
     }
+
+    return majority;
 };
