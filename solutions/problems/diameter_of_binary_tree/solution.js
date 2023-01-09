@@ -1,8 +1,9 @@
 /**
  * Definition for a binary tree node.
- * function TreeNode(val) {
- *     this.val = val;
- *     this.left = this.right = null;
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
  * }
  */
 /**
@@ -10,22 +11,21 @@
  * @return {number}
  */
 var diameterOfBinaryTree = function(root) {
-    if(!root){return 0;}
-    if(!(root.left || root.right)){return 0;}
-    
-    const left = root.left
-    const right = root.right
+    let dMax = 0;
 
-    var depthFinder = function(node) {
-        if(!node){return 0;}
-        return 1 + Math.max(depthFinder(node.left), depthFinder(node.right))
+    function dfsDiameter(node){
+        if(!node){
+            return 0
+        }
+
+        let left = dfsDiameter(node.left);
+        let right = dfsDiameter(node.right);
+
+        let d = left + right
+        dMax = Math.max(d, dMax);
+
+        return Math.max(left,right) + 1
     }
-    
-           
-    let depth_left = depthFinder(left)
-    let depth_right = depthFinder(right)
-    let root_to_leaves_path = depth_left + depth_right
-    
-    
-    return Math.max(diameterOfBinaryTree(left), diameterOfBinaryTree(right), root_to_leaves_path)
+    dfsDiameter(root)
+    return dMax
 };
