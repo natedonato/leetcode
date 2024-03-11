@@ -3,19 +3,19 @@
  * @return {number}
  */
 var maxProfit = function(prices) {
+    let i = 0;
     let currentMin = prices[0];
-    let currentMax = 0;
-
+    let maxProfit = 0;
+    
     for(let i = 1; i < prices.length; i++){
-        const currentP = prices[i];
-        if((currentP - currentMin) > currentMax){
-            currentMax = currentP - currentMin
+        let profit = prices[i] - currentMin;
+        if(profit > maxProfit){
+            maxProfit = profit;
         }
-
-        if(currentP < currentMin){
-            currentMin = currentP
-        }
-
+        if(currentMin > prices[i]){
+            currentMin = prices[i]
+        }   
     }
-    return currentMax;
+    
+    return maxProfit
 };
