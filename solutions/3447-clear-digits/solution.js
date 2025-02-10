@@ -2,31 +2,22 @@
  * @param {string} s
  * @return {string}
  */
-    const map = {
-        0:true,
-        1:true,
-        2: true,
-        3: true,
-        4: true,
-        5: true,
-        6: true, 
-        7: true,
-        8: true,
-        9: true
-    }
-    
-
 var clearDigits = function(s) {
-    const output = [];
+    let output = ""
+    const nums = "1234567890"
 
-    
     for(const char of s){
-        if(map[char]){
-            output.pop();
+        if(!nums.includes(char)){
+            output += char
         }else{
-            output.push(char)
+            let r = output.length - 1
+            while(nums.includes(output[r])){
+                r -= 1
+            }
+            const temp = output.slice(0,r) + output.slice(r+1, output.length)
+            output = temp
         }
     }
-    
-    return output.join("");
+
+    return output
 };
