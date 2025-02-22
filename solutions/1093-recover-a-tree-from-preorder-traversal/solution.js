@@ -11,48 +11,56 @@
  * @return {TreeNode}
  */
 var recoverFromPreorder = function(traversal) {
-    let j = 0;
-    let rootVal = ""
-    while(traversal[j] !== "-" && j < traversal.length){
-        rootVal += traversal[j]
-        j++;
-    }
+    let i = 0;
+
+    let [rootVal, nextIndex] = getNextInt(0, traversal);
+    i = nextIndex;
+
+    const root = new TreeNode(rootVal);
     
-    const root = new TreeNode(parseInt(rootVal));
-    let stack = [root];
-    let depth = 0;
-    
-    for(let i = j; i < traversal.length; i++){
-        let nextDepth = 0;
-        while(traversal[i] === '-'){
-            nextDepth += 1;
-            i += 1;
+    const stack = [root];
+
+    while(i < traversal.length){
+        let [depth, nextIndex] = getDepth(i, traversal);
+        i = nextIndex;
+        let nextIntData = getNextInt(i, traversal);
+        let val = nextIntData[0]
+        i = nextIntData[1];
+
+        while(depth < stack.length){
+            stack.pop();
         }
-        let nextVal = ""
-        while(i < traversal.length && traversal[i + 1] !== "-"){
-            nextVal += traversal[i]
-            i += 1;
-        }
-        nextVal += traversal[i]
-        const nextNode = new TreeNode(parseInt(nextVal));
-        
-        let last = stack.pop();        
-        
-        while(depth >= nextDepth){
-            last = stack.pop();
-            depth -= 1;
-        }
-    
-        if(!last.left){
-            last.left = nextNode;
+
+        const prevNode = stack[stack.length - 1];
+        if(prevNode.left === null){
+            prevNode.left = new TreeNode(val);
+            stack.push(prevNode.left);
         }else{
-            last.right = nextNode;
+            prevNode.right = new TreeNode(val);
+            stack.push(prevNode.right);
         }
-        
-        stack.push(last);
-        stack.push(nextNode);
-        depth += 1;
     }
-    
+
     return root;
 };
+
+
+function getNextInt(index, traversal){
+    let output = []
+    
+    while(traversal[index] !== "-" && index < traversal.length){
+        output.push(traversal[index])
+        index += 1
+    }
+    return [parseInt(output.join("")), index];
+}
+
+function getDepth(index, traversal){
+    let depth = 0
+    
+    while(traversal[index] === "-"){
+        depth += 1
+        index += 1
+    }
+    return [depth, index];
+}
