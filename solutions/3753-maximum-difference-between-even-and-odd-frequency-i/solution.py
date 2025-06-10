@@ -1,13 +1,14 @@
 class Solution:
     def maxDifference(self, s: str) -> int:
-        freqs = Counter(s)
-        even_freq = math.inf
-        odd_freq = 0
+        counts = collections.Counter(s)
+        odd = -math.inf
+        even = math.inf
 
-        for i in freqs.values():
-            if i % 2 == 0:
-                even_freq = min(even_freq, i)
+        for count in counts.values():
+            if count % 2 == 0:
+                even = min(even, count)
             else:
-                odd_freq = max(odd_freq, i)
+                odd = max(odd, count)
 
-        return odd_freq - even_freq
+        return odd - even
+
