@@ -1,27 +1,23 @@
 class EventEmitter {
     constructor(){
-        this.events = new Map();
+        this.map = {};
         this.key = 0
     }
-    
     /**
      * @param {string} eventName
      * @param {Function} callback
      * @return {Object}
      */
     subscribe(eventName, callback) {
-        const prevEvents = this.events.get(eventName) ?? new Map()
-        
+       if(this.map[eventName] === undefined){
+        this.map[eventName] = new Set()
+       }
 
-        prevEvents.set(this.key, callback)
-        this.events.set(eventName, prevEvents)
-        let eventKey = this.key
-        this.key += 1
+       this.map[eventName].add(callback);
 
         return {
             unsubscribe: () => {
-                prevEvents.delete(eventKey)
-                return undefined
+                this.map[eventName].delete(callback);
             }
         };
     }
@@ -32,15 +28,16 @@ class EventEmitter {
      * @return {Array}
      */
     emit(eventName, args = []) {
-        const output = []
-        const events = this.events.get(eventName)?.values() ?? []
-        console.log(events)
+        const out = []
+        const fns = this.map[eventName]
 
-        for(const cb of events){
-            output.push(cb(...args))
+        if(fns){
+            for(const fn of fns){
+                out.push(fn(...args));
+            }
         }
 
-        return output
+        return out;
     }
 }
 
