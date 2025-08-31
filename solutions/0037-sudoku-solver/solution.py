@@ -3,65 +3,55 @@ class Solution:
         """
         Do not return anything, modify board in-place instead.
         """
-        self.rows = {}
-        self.cols = {}
-        self.boxes = {}
-        for i in range(0,9):
-            self.rows[i] = set()
-            self.cols[i] = set()
+        self.board = board
+        self.rowsets = [ set() for _ in range(9)]
+        self.colsets = [set() for _ in range(9)]
+        self.boxsets = [ [ set() for _ in range(3)] for x in range(3)]
+
+        for r in range(9):
+            for c in range(9):
+                val = board[r][c]
+                if val != ".":
+                    self.add(r, c, val)
         
-        for i in range(0,3):
-            self.boxes[i] = {}
-            for j in range(0,3):
-                self.boxes[i][j] = set()
+        self.btrack(0)
+        
+    def canadd(self, r, c, val):
+        if val in self.rowsets[r] or val in self.colsets[c] or val in self.boxsets[r // 3][c // 3]:
+            return False
+        return True
 
-        for r in range(0,9):
-            for c in range(0,9):
-                char = board[r][c]
-                if(char != "."):
-                    self.rows[r].add(char)
-                    self.cols[c].add(char)
-                    self.boxes[r // 3][c // 3].add(char)
+    def add(self, r, c, val):
+        self.rowsets[r].add(val)
+        self.colsets[c].add(val)
+        self.boxsets[r // 3][c // 3].add(val)
+        return
+        
+    def remove(self, r, c, val):
+        self.rowsets[r].remove(val)
+        self.colsets[c].remove(val)
+        self.boxsets[r // 3][c // 3].remove(val)
+        return
 
-        print(self.btrack(board, 0))
-
-    def btrack(self, board, idx):
-        row = idx // 9
-        col = idx % 9
-        row_square = row // 3
-        col_square = col // 3
-
-        if row == 9:
+    def btrack(self, i):
+        if i == 81:
             return True
+        r = i // 9
+        c = i % 9
+        val = self.board[r][c]
+        if val != ".":
+            return self.btrack(i+1)
 
-        if board[row][col] != ".":
-            return self.btrack(board, idx + 1)
-
-        for i in range(1,10):
-            char = str(i)
-            if self.check(board, idx, char):
-                board[row][col] = char
-                if self.btrack(board, idx + 1):
+        for char in "123456789":
+            if self.canadd(r,c, char):
+                self.add(r,c, char)
+                self.board[r][c] = char
+                if self.btrack(i+1):
                     return True
                 else:
-                    self.rows[row].remove(char)
-                    self.cols[col].remove(char)
-                    self.boxes[row_square][col_square].remove(char)
+                    self.remove(r,c,char)
 
-        board[row][col] = "."
+        self.board[r][c] = "."
         return False
 
-    def check(self, board, idx, char):
-        row = idx // 9
-        col = idx % 9
-        row_square = row // 3
-        col_square = col // 3
-
-        if char in self.rows[row] or char in self.cols[col] or char in self.boxes[row_square][col_square]:
-            return False
-        else:
-            self.rows[row].add(char)
-            self.cols[col].add(char)
-            self.boxes[row_square][col_square].add(char)
-            return True
-
+        
