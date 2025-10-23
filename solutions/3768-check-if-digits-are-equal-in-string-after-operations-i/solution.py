@@ -1,15 +1,14 @@
 class Solution:
     def hasSameDigits(self, s: str) -> bool:
-        s = list(int(c) for c in s)
         while len(s) > 2:
-            first = s[0]
-            second = s[1]
+            next_s = []
 
-            for i in range(0, len(s) - 1):
-                s[i] = (first + second) % 10
-                if( i + 2 < len(s)):
-                    first = s[i + 1]
-                    second = s[i + 2]
-            s.pop()
+            for i in range(1, len(s)):
+                p = s[i - 1]
+                c = s[i]
+                next_char = (int(p) + int(c)) % 10
+                next_s.append(str(next_char))
+
+            s = "".join(next_s)
 
         return s[0] == s[1]
