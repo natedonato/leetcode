@@ -1,8 +1,6 @@
 class Solution:
     def smallestNumber(self, n: int) -> int:
-        x = 1
-        c = 1
+        x = 0
         while x < n:
-            x += 2 **c
-            c += 1
+            x = (x << 1) + 1
         return x
