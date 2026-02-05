@@ -1,9 +1,10 @@
 class Solution:
     def constructTransformedArray(self, nums: List[int]) -> List[int]:
-        output = []
+        l = len(nums)
+        result = [0] * l
         for i, num in enumerate(nums):
-            index = (i + num)
-            index = index % len(nums)
-            output.append(nums[index])
-        
-        return output
+            j = (i + num) % l
+            result[i] = nums[j]
+
+        return result
+            
