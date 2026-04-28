@@ -1,23 +1,18 @@
 class Solution:
     def minOperations(self, grid: List[List[int]], x: int) -> int:
-        arr = []
-        m = len(grid)
-        n = len(grid[0])
-        for r in range(0, m):
-            for c in range(0, n):
-                arr.append(grid[r][c])
-        
-        arr.sort()
+        a = [el for row in grid for el in row]
+        a.sort()
 
-        mid = arr[len(arr)//2]
-        count = 0
+        med = a[len(a) // 2]
 
-        for el in arr:
-            diff = abs(el - mid)
-            if diff % x != 0:
+        remain = med % x
+        ops = 0
+
+        for el in a:
+            if el % x != remain:
                 return -1
-            else:
-                count += diff // x
+            
+            diff = abs(med - el)
+            ops += diff // x
 
-        return count
-
+        return ops
