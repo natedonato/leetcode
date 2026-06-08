@@ -1,9 +1,8 @@
 class Solution:
     def pivotArray(self, nums: List[int], pivot: int) -> List[int]:
         left = []
-        mid = []
         right = []
-        
+        mid = []
         for num in nums:
             if num < pivot:
                 left.append(num)
@@ -11,5 +10,5 @@ class Solution:
                 mid.append(num)
             else:
                 right.append(num)
-                
+
         return left + mid + right
